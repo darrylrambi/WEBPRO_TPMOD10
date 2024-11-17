@@ -6,8 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TPMOD10</title>
 
-  <!-- Connect CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <script>
+    function loadDoc() {
+      const inputField = document.getElementById("inputNama");
+      const name = inputField.value.trim();
+      const xhttp = new XMLHttpRequest();
+
+      xhttp.open("POST", "server.php", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      if (name === "") {
+        document.getElementById("ganti").innerHTML = "Nama tidak boleh kosong!";
+        document.getElementById("ganti").style.color = "red";
+        return;
+      }
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("ganti").innerHTML = this.responseText;
+          document.getElementById("ganti").style.color = "green";
+        }
+      };
+      xhttp.send(`name=${encodeURIComponent(name)}`);
+    }
+  </script>
 </head>
 
 <body>
@@ -17,19 +40,6 @@
     <button type="button" onclick="loadDoc()">Kirim</button>
   </div>
   <h3 id="ganti"></h3>
-
-  <script>
-    function loadDoc() {
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("ganti").innerHTML = this.responseText;
-        }
-      };
-      xhttp.open("GET", "ajax_info.txt", true);
-      xhttp.send();
-    }
-  </script>
 </body>
 
 </html>
